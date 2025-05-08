@@ -2,6 +2,8 @@
 
 namespace App\Domain\Entities;
 
+use InvalidArgumentException;
+
 class Product
 {
     public function __construct(
@@ -9,5 +11,9 @@ class Product
         public string $brands,
         public string $categories,
         public string $productName,
-    ) {}
+    ) {
+        if (!strlen($productName)) {
+            throw new InvalidArgumentException('Product name cannot be empty.');
+        }
+    }
 }

@@ -13,5 +13,6 @@ class CreateProductUseCase
     {
         $product = new Product($dto->code, $dto->brands, $dto->categories, $dto->productName);
         $this->repository->create($product);
+        return $product;
     }
 }
