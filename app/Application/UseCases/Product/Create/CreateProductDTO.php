@@ -2,6 +2,8 @@
 
 namespace App\Application\UseCases\Product\Create;
 
+use App\Domain\Enum\ProductStatusEnum;
+
 class CreateProductDTO
 {
     public function __construct(
@@ -9,5 +11,15 @@ class CreateProductDTO
         public string $brands,
         public string $categories,
         public string $productName,
+        public string $image_url,
+        public string $ingredients_text,
+        public string $nutriments_energy,
+        public string $nutriments_fat,
+        public string $nutriments_saturated_fat,
+        public string $nutriments_sugars,
+        public string $nutriments_proteins,
+        public string $nutriments_salt,
+        public string $imported_t,
+        public ProductStatusEnum $status,
     ) {}
 }

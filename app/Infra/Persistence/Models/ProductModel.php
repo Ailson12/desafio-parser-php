@@ -2,6 +2,7 @@
 
 namespace App\Infra\Persistence\Models;
 
+use App\Domain\Enum\ProductStatusEnum;
 use Illuminate\Database\Eloquent\Model;
 
 class ProductModel extends Model
@@ -22,5 +23,9 @@ class ProductModel extends Model
         'nutriments_salt',
         'imported_t',
         'status',
+    ];
+
+    protected $casts = [
+        'status' => ProductStatusEnum::class,
     ];
 }
