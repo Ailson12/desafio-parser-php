@@ -6,6 +6,8 @@ use App\Domain\Entities\Product;
 
 interface IProductRepository
 {
+    public function paginate(int $page, int $perPage);
+
     public function update(Product $product): void;
 
     public function deleteByCode(string $code): void;
