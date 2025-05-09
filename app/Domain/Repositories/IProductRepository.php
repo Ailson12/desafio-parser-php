@@ -6,6 +6,10 @@ use App\Domain\Entities\Product;
 
 interface IProductRepository
 {
+    public function deleteByCode(string $code): void;
+
+    public function findByCode(string $code): ?Product;
+
     public function create(Product $product): void;
 
     /**

@@ -3,13 +3,51 @@
 namespace App\Infra\Persistence\Repositories;
 
 use App\Domain\Entities\Product;
+use App\Domain\Enum\ProductStatusEnum;
 use App\Domain\Repositories\IProductRepository;
+use App\Domain\ValueObjects\NutritionInformation;
 use App\Infra\Persistence\Models\ProductModel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class ProductRepositoryEloquent implements IProductRepository
 {
+    public function deleteByCode(string $code): void
+    {
+        $product = ProductModel::where('code', $code)->first();
+        $product->status = ProductStatusEnum::TRASH;
+        $product->save();
+    }
+
+    public function findByCode(string $code): ?Product
+    {
+        $product = ProductModel::where('code', $code)->first();
+        if (!$product) {
+            return null;
+        }
+
+        $nutritionInformation = new NutritionInformation(
+            $product->nutriments_energy,
+            $product->nutriments_fat,
+            $product->nutriments_saturated_fat,
+            $product->nutriments_sugars,
+            $product->nutriments_proteins,
+            $product->nutriments_salt,
+            $product->ingredients_text
+        );
+
+        return new Product(
+            $product->code,
+            $product->brands,
+            $product->categories,
+            $product->product_name,
+            $product->image_url,
+            $product->imported_t,
+            $nutritionInformation,
+            $product->status,
+        );
+    }
+
     public function createAll(array $products): void
     {
         $now = Carbon::now();
