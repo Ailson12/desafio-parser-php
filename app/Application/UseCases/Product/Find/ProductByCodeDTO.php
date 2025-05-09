@@ -7,7 +7,7 @@ use App\Domain\Entities\Product;
 
 class ProductByCodeDTO extends BasicProductDTO
 {
-    public string $id;
+    public ?string $id;
 
     public static function mapFromProduct(Product $product)
     {

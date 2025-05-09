@@ -20,7 +20,7 @@ class UpdateProductUseCase
             throw new Exception("Product with code {$code} not found.");
         }
 
-        $productUpdate = $dto->mapperToProduct($product);
+        $productUpdate = $dto->mapperToProduct($product->imported_t);
         $this->productRepository->update($productUpdate);
     }
 }

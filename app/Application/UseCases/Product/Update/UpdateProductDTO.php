@@ -22,7 +22,7 @@ class UpdateProductDTO extends BasicProductDTO
         );
     }
 
-    public function mapperToProduct(ProductByCodeDTO $productByCode): Product
+    public function mapperToProduct(string $importedT): Product
     {
         $nutritionInformation = $this->mapperNutritionInformation();
         return new Product(
@@ -31,7 +31,7 @@ class UpdateProductDTO extends BasicProductDTO
             $this->categories,
             $this->productName,
             $this->image_url,
-            $productByCode->imported_t,
+            $importedT,
             $nutritionInformation,
             $this->status
         );
