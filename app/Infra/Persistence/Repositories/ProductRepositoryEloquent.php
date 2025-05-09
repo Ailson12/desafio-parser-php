@@ -12,6 +12,14 @@ use Illuminate\Support\Facades\DB;
 
 class ProductRepositoryEloquent implements IProductRepository
 {
+    public function update(Product $product): void
+    {
+        $productData = $this->mapperProductToModel($product);
+        ProductModel::where('code', $product->getCode())
+            ->first()
+            ->update($productData);
+    }
+
     public function deleteByCode(string $code): void
     {
         $product = ProductModel::where('code', $code)->first();
@@ -53,25 +61,12 @@ class ProductRepositoryEloquent implements IProductRepository
     {
         $now = Carbon::now();
         $productsWithTimeStamp = array_map(function ($product) use ($now) {
-            $nutritionInformation = $product->getNutritionInformation();
-            return [
-                'code' => $product->getCode(),
-                'brands' => $product->getBrands(),
-                'categories' => $product->getCategories(),
-                'product_name' => $product->getProductName(),
-                'image_url' => $product->getImageUrl(),
-                'ingredients_text' => $nutritionInformation->getIngredientsText(),
-                'nutriments_energy' => $nutritionInformation->getEnergy(),
-                'nutriments_fat' => $nutritionInformation->getFat(),
-                'nutriments_saturated_fat' => $nutritionInformation->getSaturatedFat(),
-                'nutriments_sugars' => $nutritionInformation->getSugars(),
-                'nutriments_proteins' => $nutritionInformation->getProteins(),
-                'nutriments_salt' => $nutritionInformation->getSalt(),
-                'imported_t' => $product->getImportedT(),
-                'status' => $product->getStatus(),
+            $productData = $this->mapperProductToModel($product);
+
+            return array_merge($productData, [
                 'created_at' => $now,
                 'updated_at' => $now,
-            ];
+            ]);
         }, $products);
 
         DB::table('products')->insertOrIgnore($productsWithTimeStamp);
@@ -79,9 +74,14 @@ class ProductRepositoryEloquent implements IProductRepository
 
     public function create(Product $product): void
     {
-        $nutritionInformation = $product->getNutritionInformation();
+        $productData = $this->mapperProductToModel($product);
+        ProductModel::create($productData);
+    }
 
-        ProductModel::create([
+    private function mapperProductToModel(Product $product)
+    {
+        $nutritionInformation = $product->getNutritionInformation();
+        return [
             'code' => $product->getCode(),
             'brands' => $product->getBrands(),
             'categories' => $product->getCategories(),
@@ -96,6 +96,6 @@ class ProductRepositoryEloquent implements IProductRepository
             'nutriments_salt' => $nutritionInformation->getSalt(),
             'imported_t' => $product->getImportedT(),
             'status' => $product->getStatus(),
-        ]);
+        ];
     }
 }

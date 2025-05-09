@@ -2,7 +2,6 @@
 
 namespace App\Application\UseCases\Product\Find;
 
-use App\Domain\Entities\Product;
 use App\Domain\Repositories\IProductRepository;
 
 class GetProductByCodeUseCase

@@ -10,3 +10,4 @@ Route::get('/user', function (Request $request) {
 
 Route::get('/product/{code}', [ProductController::class, 'show']);
 Route::delete('product/{code}', [ProductController::class, 'destroy']);
+Route::put('/product/{code}', [ProductController::class, 'update']);
