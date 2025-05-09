@@ -2,29 +2,12 @@
 
 namespace App\Application\UseCases\Product\Create;
 
+use App\Application\UseCases\Product\BasicProductDTO;
 use App\Domain\Entities\Product;
-use App\Domain\Enum\ProductStatusEnum;
 use App\Domain\ValueObjects\NutritionInformation;
 
-class CreateProductDTO
+class CreateProductDTO extends BasicProductDTO
 {
-    public function __construct(
-        public string $code,
-        public string $brands,
-        public string $categories,
-        public string $productName,
-        public string $image_url,
-        public string $ingredients_text,
-        public string $nutriments_energy,
-        public string $nutriments_fat,
-        public string $nutriments_saturated_fat,
-        public string $nutriments_sugars,
-        public string $nutriments_proteins,
-        public string $nutriments_salt,
-        public string $imported_t,
-        public ProductStatusEnum $status,
-    ) {}
-
     private function mapperNutritionInformation()
     {
         return new NutritionInformation(

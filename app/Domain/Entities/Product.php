@@ -8,6 +8,7 @@ use InvalidArgumentException;
 
 class Product
 {
+    private ?string $id;
     private string $code;
     private string $brands;
     private string $categories;
@@ -25,12 +26,14 @@ class Product
         string $imageUrl,
         string $importedT,
         NutritionInformation $nutritionInformation,
-        ProductStatusEnum $status
+        ProductStatusEnum $status,
+        $id = null
     ) {
         if (!strlen($productName)) {
             throw new InvalidArgumentException('Product name cannot be empty.');
         }
 
+        $this->id = $id;
         $this->code = $code;
         $this->brands = $brands;
         $this->categories = $categories;
@@ -49,6 +52,16 @@ class Product
     public function setNutritionInformation(NutritionInformation $nutritionInformation): void
     {
         $this->nutritionInformation = $nutritionInformation;
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function setId(string $id): void
+    {
+        $this->id = $id;
     }
 
     public function getCode(): string

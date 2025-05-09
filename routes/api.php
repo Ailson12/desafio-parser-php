@@ -8,4 +8,5 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+Route::get('/product/{code}', [ProductController::class, 'show']);
 Route::delete('product/{code}', [ProductController::class, 'destroy']);

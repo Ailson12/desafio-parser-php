@@ -21,30 +21,31 @@ class ProductRepositoryEloquent implements IProductRepository
 
     public function findByCode(string $code): ?Product
     {
-        $product = ProductModel::where('code', $code)->first();
-        if (!$product) {
+        $productModel = ProductModel::where('code', $code)->first();
+        if (!$productModel) {
             return null;
         }
 
         $nutritionInformation = new NutritionInformation(
-            $product->nutriments_energy,
-            $product->nutriments_fat,
-            $product->nutriments_saturated_fat,
-            $product->nutriments_sugars,
-            $product->nutriments_proteins,
-            $product->nutriments_salt,
-            $product->ingredients_text
+            $productModel->nutriments_energy,
+            $productModel->nutriments_fat,
+            $productModel->nutriments_saturated_fat,
+            $productModel->nutriments_sugars,
+            $productModel->nutriments_proteins,
+            $productModel->nutriments_salt,
+            $productModel->ingredients_text
         );
 
         return new Product(
-            $product->code,
-            $product->brands,
-            $product->categories,
-            $product->product_name,
-            $product->image_url,
-            $product->imported_t,
+            $productModel->code,
+            $productModel->brands,
+            $productModel->categories,
+            $productModel->product_name,
+            $productModel->image_url,
+            $productModel->imported_t,
             $nutritionInformation,
-            $product->status,
+            $productModel->status,
+            $productModel->id
         );
     }
 
