@@ -10,18 +10,18 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('code')->comment('unique product code')->unique(); //  (ex: código de barras)
+            $table->string('code')->comment('unique product code')->unique();
             $table->string('product_name')->nullable();
             $table->string('brands')->nullable();
             $table->string('categories')->nullable();
             $table->string('image_url')->nullable();
             $table->text('ingredients_text')->nullable();
-            $table->float('nutriments_energy')->comment('kcal')->nullable();
-            $table->float('nutriments_fat')->nullable();
-            $table->float('nutriments_saturated_fat')->nullable();
-            $table->float('nutriments_sugars')->nullable();
-            $table->float('nutriments_proteins')->nullable();
-            $table->float('nutriments_salt')->nullable();
+            $table->string('nutriments_energy')->comment('kcal')->nullable();
+            $table->string('nutriments_fat')->nullable();
+            $table->string('nutriments_saturated_fat')->nullable();
+            $table->string('nutriments_sugars')->nullable();
+            $table->string('nutriments_proteins')->nullable();
+            $table->string('nutriments_salt')->nullable();
 
             // Campos personalizados
             $table->timestamp('imported_t')->comment('import datetime')->nullable();
