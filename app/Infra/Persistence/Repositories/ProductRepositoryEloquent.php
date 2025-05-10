@@ -47,7 +47,7 @@ class ProductRepositoryEloquent implements IProductRepository
     {
         $now = Carbon::now();
         $productsWithTimeStamp = array_map(function ($product) use ($now) {
-            $productData = EloquentProductMapper::toModel($product);
+            $productData = EloquentProductMapper::toModel($product)->toArray();
 
             return array_merge($productData, [
                 'created_at' => $now,
