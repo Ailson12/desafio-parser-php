@@ -1,0 +1,169 @@
+openapi: 3.0.3
+info:
+  title: Open Food Facts API
+  version: 1.0.0
+  description: API para importação, consulta e atualização de produtos do Open Food Facts
+  contact:
+    email: robertofeitosa06@gmail.com
+
+servers:
+  - url: http://localhost/api
+
+paths:
+  /:
+    get:
+      tags:
+        - Default
+      summary: Verifica o status da API
+      responses:
+        '200':
+          description: Status da API
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  database:
+                    type: object
+                    properties:
+                      canRead:
+                        type: boolean
+                      canWrite:
+                        type: boolean
+                  lastCronExecution:
+                    type: string
+                    format: date-time
+                  uptime:
+                    type: string
+                  memoryUsage:
+                    type: string
+
+  /user:
+    get:
+      tags:
+        - Default
+      summary: Retorna o usuário autenticado
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Usuário autenticado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  email:
+                    type: string
+
+  /products:
+    get:
+      tags:
+        - Products
+      summary: Lista os produtos com paginação
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+          required: false
+        - name: per_page
+          in: query
+          schema:
+            type: integer
+          required: false
+      responses:
+        '200':
+          description: Lista paginada de produtos
+
+  /products/{code}:
+    get:
+      tags:
+        - Products
+      summary: Retorna um produto pelo código
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Produto encontrado
+        '404':
+          description: Produto não encontrado
+
+    delete:
+      tags:
+        - Products
+      summary: Deleta um produto pelo código
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Produto deletado
+        '404':
+          description: Produto não encontrado
+
+    put:
+      tags:
+        - Products
+      summary: Atualiza um produto pelo código
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                brands:
+                  type: string
+                categories:
+                  type: string
+                product_name:
+                  type: string
+                image_url:
+                  type: string
+                ingredients_text:
+                  type: string
+                nutriments_energy:
+                  type: number
+                nutriments_fat:
+                  type: number
+                nutriments_saturated_fat:
+                  type: number
+                nutriments_sugars:
+                  type: number
+                nutriments_proteins:
+                  type: number
+                nutriments_salt:
+                  type: number
+                status:
+                  type: string
+                  enum: [draft, published, trash]
+      responses:
+        '200':
+          description: Produto atualizado
+        '404':
+          description: Produto não encontrado
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
