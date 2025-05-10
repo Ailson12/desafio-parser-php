@@ -14,7 +14,8 @@ class ProductRepositoryEloquent implements IProductRepository
 {
     public function paginate(int $page, int $perPage)
     {
-        return ProductModel::paginate($perPage, ['*'], 'page', $page)
+        return ProductModel::where('status', '!=', ProductStatusEnum::TRASH)
+            ->paginate($perPage, ['*'], 'page', $page)
             ->through(fn($item) => EloquentProductMapper::toEntity($item));
     }
 
@@ -22,20 +23,23 @@ class ProductRepositoryEloquent implements IProductRepository
     {
         $productData = EloquentProductMapper::toModel($product);
         ProductModel::where('code', $product->getCode())
+            ->where('status', '!=', ProductStatusEnum::TRASH)
             ->first()
             ->update($productData);
     }
 
     public function deleteByCode(string $code): void
     {
-        $product = ProductModel::where('code', $code)->first();
+        $product = ProductModel::where('code', $code)
+            ->where('status', '!=', ProductStatusEnum::TRASH)
+            ->first();
         $product->status = ProductStatusEnum::TRASH;
         $product->save();
     }
 
     public function findByCode(string $code): ?Product
     {
-        $productModel = ProductModel::where('code', $code)->first();
+        $productModel = ProductModel::where('code', $code)->where('status', '!=', ProductStatusEnum::TRASH)->first();
         if (!$productModel) {
             return null;
         }

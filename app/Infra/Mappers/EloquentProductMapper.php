@@ -50,7 +50,8 @@ class EloquentProductMapper
                 salt: $model->nutriments_salt,
             ),
             importedT: $model->imported_t ? Carbon::parse($model->imported_t) : null,
-            status: $model->status
+            status: $model->status,
+            id: $model->id
         );
     }
 }
